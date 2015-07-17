@@ -12,9 +12,28 @@ exports.load=function(req,res,next,quizId){
   };
 
 exports.index=function(req,res){
+ if(req.query.search)
+ {
+  var cadena=req.query.search;
+  cadena=cadena.replace(/\s/g,"%");
+  cadena="%"+cadena+"%";
+  models.Quiz.findAll({
+               where:["pregunta like ?",cadena],
+               order:[['pregunta','ASC']]
+              }).then(function(quizes){
+                                        res.render('quizes/buscador.ejs',{quizes:quizes});
+                                      }
+                     ).catch(function(error){next(error);})
+
+ }
+ else
+ {
+
   models.Quiz.findAll().then(function(quizes){
      res.render('quizes/index.ejs',{quizes:quizes});
     }).catch(function(error){next(error);})
+ }
+
 };
 
 exports.show=function(req,res){
