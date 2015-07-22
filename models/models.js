@@ -29,13 +29,16 @@ sequelize.sync().then(function(){
             Quiz.count().then(function(count){
                                        if(count===0){
                                             Quiz.create({pregunta:'Capital de Italia',
-                                                         respuesta:'Roma'
+                                                         respuesta:'Roma',
+                                                         tematica:'humanidades'
                                                        });
                                              Quiz.create({pregunta:'Capital de Portugal',
-                                                           respuesta:'Lisboa'
+                                                           respuesta:'Lisboa',
+                                                          tematica:'humanidades'
                                                        });
                                              Quiz.create({pregunta:'Color Caballo Blanco de Santiago',
-                                                           respuesta:'Blanco'
+                                                           respuesta:'Blanco',
+                                                          tematica:'ocio'
                                                        })
                                         .then(function(){console.log('Base de datos inicializada')});
                    };

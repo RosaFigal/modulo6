@@ -53,7 +53,7 @@ exports.answer=function(req,res){
 
 exports.new=function(req,res){
    var quiz=models.Quiz.build(
-      {pregunta:"Pregunta",respuesta:"Respuesta"}
+      {pregunta:"Pregunta",respuesta:"Respuesta",tematica:"otro"}
      );
 res.render('quizes/new',{quiz:quiz,errors:[]});
  };
@@ -70,7 +70,7 @@ exports.create=function(req,res){
                          res.render('quizes/new',{quiz:quiz,errors:err.errors});
                         }
                  else{
-                       quiz.save({fields:["pregunta","respuesta"]}).then(
+                       quiz.save({fields:["pregunta","respuesta","tematica"]}).then(
                                            function(){res.redirect('/quizes')})
                      }
               }
@@ -86,6 +86,8 @@ exports.edit=function(req,res){
 exports.update=function(req,res){
  req.quiz.pregunta=req.body.quiz.pregunta;
  req.quiz.respuesta=req.body.quiz.respuesta;
+ req.quiz.tematica=req.body.quiz.tematica;
+
  req.quiz
  .validate()
  .then(
@@ -95,7 +97,7 @@ exports.update=function(req,res){
                 }
          else{
               req.quiz
-              .save({fields:["pregunta","respuesta"]})
+              .save({fields:["pregunta","respuesta","tematica"]})
               .then(function(){res.redirect('/quizes');});
              }
        }
@@ -109,6 +111,6 @@ exports.destroy=function(req,res){
 };
 
 exports.author=function(req,res){
-  res.render('author',{autor:'Rosa Figal'});
+  res.render('author',{autor:'Rosa Figal',errors:[]});
 };
 
