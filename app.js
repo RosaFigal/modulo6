@@ -39,6 +39,23 @@ app.use(function(req,res,next){
           next();
      });
 
+app.use(function(req,res,next){
+
+  if(req.session.user && req.session.accesoanterior){
+    var time1=req.session.accesoanterior;
+    var time2=new Date().getTime();
+    var minutos=(time2-time1)/(1000*60);
+    if(minutos>2)
+     { delete req.session.user;
+       delete req.session.accesoanterior;
+       res.redirect('/');
+     }
+   }
+    req.session.accesoanterior=new Date().getTime();
+   
+  next();
+ });
+ 
 app.use('/', routes);
 
 // catch 404 and forward to error handler
