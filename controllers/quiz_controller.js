@@ -1,4 +1,5 @@
 var models=require('../models/models.js');
+var Promise=require('promise');
 
 exports.load=function(req,res,next,quizId){
    models.Quiz.find({
@@ -111,6 +112,27 @@ exports.destroy=function(req,res){
   req.quiz.destroy().then(function(){
    res.redirect('/quizes');
   }).catch(function(error){next(error)});
+};
+
+exports.stadistics=function(req,res){
+ var resultado={};
+
+  var p=models.Quiz.count();
+  var c=models.Comment.count();
+  var psin=models.Quiz.count({where:['id NOT IN(SELECT quizid FROM Comments)']});
+  var pcon=models.Quiz.count({where:['id IN(SELECT quizid FROM Comments)']});
+
+  Promise.all([p,c,psin,pcon])
+  .then(function(result){
+        resultado.preguntas=result[0];
+        resultado.comentarios=result[1];
+        resultado.preguntassin=result[2];
+        resultado.preguntascon=result[3];
+        if(resultado.preguntas>0){resultado.media=resultado.comentarios/resultado.preguntas;}
+        res.render('estadisticas',{resultado:resultado,errors:[]});
+      },function(error){next(error);}
+    ).catch(function(error){next(error);});
+
 };
 
 exports.author=function(req,res){
