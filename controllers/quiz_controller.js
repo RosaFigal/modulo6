@@ -119,8 +119,8 @@ exports.stadistics=function(req,res){
 
   var p=models.Quiz.count();
   var c=models.Comment.count();
-  var psin=models.Quiz.count({where:['id NOT IN(SELECT quizid FROM Comments)']});
-  var pcon=models.Quiz.count({where:['id IN(SELECT quizid FROM Comments)']});
+  var psin=models.Quiz.count({where:['"id" NOT IN(SELECT "QuizId" FROM "Comments")']});
+  var pcon=models.Quiz.count({where:['"id" IN(SELECT "QuizId" FROM "Comments")']});
 
   Promise.all([p,c,psin,pcon])
   .then(function(result){
